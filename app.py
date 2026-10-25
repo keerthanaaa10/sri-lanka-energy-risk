@@ -5,6 +5,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from src.feature_engineering import CONSUMPTION_FEATURES
 from src.predict import explain_prediction, load_model, predict_household
 
 
@@ -157,7 +158,7 @@ def resources():
 
 def defaults(kind: str) -> dict:
     common = {
-        "month_number": 10,
+        "prediction_month": 10,
         "csc_area": "GALLE",
         "housing_type": "Single House - Single Floor",
         "socio_economic_class": "SEC C",
@@ -169,9 +170,6 @@ def defaults(kind: str) -> dict:
     }
     low = {
         **common,
-        "previous_month_consumption": 42.0,
-        "consumption_two_months_ago": 46.0,
-        "consumption_three_months_ago": 49.0,
         "household_size": 3,
         "floor_area": 700.0,
         "monthly_expenditure": 45000.0,
@@ -188,12 +186,11 @@ def defaults(kind: str) -> dict:
         "has_television": 1,
         "has_air_conditioner": 0,
     }
+    for index, feature in enumerate(CONSUMPTION_FEATURES):
+        low[feature] = float(54 - index)
     if kind == "high":
-        return {
+        high = {
             **common,
-            "previous_month_consumption": 235.0,
-            "consumption_two_months_ago": 190.0,
-            "consumption_three_months_ago": 155.0,
             "household_size": 6,
             "floor_area": 2100.0,
             "monthly_expenditure": 145000.0,
@@ -210,6 +207,9 @@ def defaults(kind: str) -> dict:
             "has_television": 1,
             "has_air_conditioner": 1,
         }
+        for index, feature in enumerate(CONSUMPTION_FEATURES):
+            high[feature] = float(260 - index * 4)
+        return high
     if kind == "invalid":
         return {**low, "previous_month_consumption": -20.0}
     return low
@@ -223,6 +223,7 @@ def heading(title: str, note: str = "") -> None:
 model, schema, metadata = resources()
 demo = st.query_params.get("demo", "")
 record = defaults(demo if demo in {"low", "high", "invalid"} else "low")
+accuracy = metadata["test_metrics"]["Accuracy"] * 100
 balanced_accuracy = metadata["test_metrics"]["Balanced Accuracy"] * 100
 
 st.markdown(
@@ -233,10 +234,11 @@ st.markdown(
   <div><h1 class="brand">Household Electricity Risk Checker</h1><p>Sri Lanka residential electricity project</p></div>
 </div>
 <div class="intro">
-  <p>This tool estimates whether a household's electricity use could go above <b>90 kWh next month</b>. Fill in the recent meter readings and household details below.</p>
+  <p>This tool estimates whether a household's electricity use could reach <b>200 kWh or more next month</b>. Enter the billing history and household details below.</p>
   <div class="model-info">
     <span><b>Model:</b> {metadata['model_name']}</span>
-    <span><b>Test balanced accuracy:</b> {balanced_accuracy:.2f}%</span>
+    <span><b>Test accuracy:</b> {accuracy:.2f}%</span>
+    <span><b>Balanced accuracy:</b> {balanced_accuracy:.2f}%</span>
     <span><b>Data:</b> {metadata['households_used']:,} households</span>
   </div>
 </div>
@@ -246,12 +248,20 @@ st.markdown(
 
 if demo not in {"low", "high", "invalid"}:
     with st.form("risk_form"):
-        heading("1. Recent electricity use", "Use the values shown on the last three bills")
+        heading("1. Electricity-use history", "Use the values shown on the last 13 bills")
         a, b, c, d = st.columns([1, 1, 1, .75])
         record["consumption_three_months_ago"] = a.number_input("Three months ago (kWh)", value=record["consumption_three_months_ago"], step=1.0)
         record["consumption_two_months_ago"] = b.number_input("Two months ago (kWh)", value=record["consumption_two_months_ago"], step=1.0)
         record["previous_month_consumption"] = c.number_input("Previous month (kWh)", value=record["previous_month_consumption"], step=1.0)
-        record["month_number"] = d.number_input("Reading month", min_value=1, max_value=12, value=record["month_number"])
+        record["prediction_month"] = d.number_input("Prediction month", min_value=1, max_value=12, value=record["prediction_month"])
+        with st.expander("Earlier billing history (required for the trained model)"):
+            earlier = CONSUMPTION_FEATURES[3:]
+            labels = ["Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen"]
+            for start in range(0, len(earlier), 2):
+                cols = st.columns(2)
+                for offset, feature in enumerate(earlier[start:start + 2]):
+                    label = labels[start + offset] + " months ago (kWh)"
+                    record[feature] = cols[offset].number_input(label, value=record[feature], step=1.0)
 
         heading("2. Household information")
         a, b, c = st.columns(3)
@@ -318,9 +328,9 @@ if submitted:
         result_class = "high" if high else ""
         probability = outcome["probability"] * 100
         message = (
-            "The entered information suggests that usage may exceed 90 kWh next month."
+            "The entered information suggests that usage may reach 200 kWh or more next month."
             if high
-            else "The entered information suggests that usage is less likely to exceed 90 kWh next month."
+            else "The entered information suggests that usage is less likely to reach 200 kWh next month."
         )
         st.markdown(
             f"""
@@ -347,7 +357,7 @@ if submitted:
         with right:
             st.markdown('<div class="subheading">Suggested checks</div>', unsafe_allow_html=True)
             suggestions = []
-            if record["previous_month_consumption"] > 90:
+            if record["previous_month_consumption"] >= 200:
                 suggestions.append("Check which appliances were used more than usual last month.")
             if record["has_air_conditioner"]:
                 suggestions.append("Use an AC timer and close doors and windows while it is running.")

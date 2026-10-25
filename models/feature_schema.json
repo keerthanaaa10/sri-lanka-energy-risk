@@ -3,14 +3,41 @@
     "previous_month_consumption",
     "consumption_two_months_ago",
     "consumption_three_months_ago",
-    "three_month_average",
-    "three_month_max",
-    "three_month_min",
+    "consumption_four_months_ago",
+    "consumption_five_months_ago",
+    "consumption_six_months_ago",
+    "consumption_seven_months_ago",
+    "consumption_eight_months_ago",
+    "consumption_nine_months_ago",
+    "consumption_ten_months_ago",
+    "consumption_eleven_months_ago",
+    "consumption_twelve_months_ago",
+    "consumption_thirteen_months_ago",
+    "two_month_average",
+    "four_month_average",
+    "four_month_median",
+    "four_month_min",
+    "four_month_max",
+    "four_month_standard_deviation",
+    "six_month_average",
+    "six_month_standard_deviation",
     "consumption_change",
-    "consumption_percentage_change",
-    "rolling_standard_deviation",
-    "month_number",
-    "quarter",
+    "two_month_consumption_change",
+    "consumption_ratio",
+    "months_above_90_last_four",
+    "months_above_90_last_six",
+    "all_last_four_above_90",
+    "all_last_four_below_90",
+    "distance_from_90",
+    "same_month_last_year",
+    "prediction_month",
+    "prediction_month_sine",
+    "prediction_month_cosine",
+    "historical_average",
+    "historical_standard_deviation",
+    "historical_above_90_rate",
+    "latest_difference_from_history",
+    "four_month_trend",
     "household_size",
     "floor_area",
     "monthly_expenditure",
@@ -39,47 +66,41 @@
     "previous_month_consumption",
     "consumption_two_months_ago",
     "consumption_three_months_ago",
-    "three_month_average",
-    "three_month_max",
-    "three_month_min",
+    "consumption_four_months_ago",
+    "consumption_five_months_ago",
+    "consumption_six_months_ago",
+    "consumption_seven_months_ago",
+    "consumption_eight_months_ago",
+    "consumption_nine_months_ago",
+    "consumption_ten_months_ago",
+    "consumption_eleven_months_ago",
+    "consumption_twelve_months_ago",
+    "consumption_thirteen_months_ago",
+    "two_month_average",
+    "four_month_average",
+    "four_month_median",
+    "four_month_min",
+    "four_month_max",
+    "four_month_standard_deviation",
+    "six_month_average",
+    "six_month_standard_deviation",
     "consumption_change",
-    "consumption_percentage_change",
-    "rolling_standard_deviation",
-    "month_number",
-    "quarter",
-    "household_size",
-    "floor_area",
-    "monthly_expenditure",
-    "total_appliances",
-    "total_appliance_hours_week",
-    "high_energy_appliance_count",
-    "ac_count",
-    "ac_hours_week"
-  ],
-  "binary_features": [
-    "has_refrigerator",
-    "has_washing_machine",
-    "has_rice_cooker",
-    "has_water_heater",
-    "has_computer",
-    "has_television",
-    "has_air_conditioner",
-    "home_business",
-    "solar_generation",
-    "grid_cooking"
-  ],
-  "categorical_features": [
-    "csc_area",
-    "housing_type",
-    "socio_economic_class",
-    "meter_type",
-    "water_heating_method"
-  ],
-  "required_user_inputs": [
-    "previous_month_consumption",
-    "consumption_two_months_ago",
-    "consumption_three_months_ago",
-    "month_number",
+    "two_month_consumption_change",
+    "consumption_ratio",
+    "months_above_90_last_four",
+    "months_above_90_last_six",
+    "all_last_four_above_90",
+    "all_last_four_below_90",
+    "distance_from_90",
+    "same_month_last_year",
+    "prediction_month",
+    "prediction_month_sine",
+    "prediction_month_cosine",
+    "historical_average",
+    "historical_standard_deviation",
+    "historical_above_90_rate",
+    "latest_difference_from_history",
+    "four_month_trend",
     "household_size",
     "floor_area",
     "monthly_expenditure",
@@ -97,21 +118,14 @@
     "has_air_conditioner",
     "home_business",
     "solar_generation",
-    "grid_cooking",
+    "grid_cooking"
+  ],
+  "categorical_features": [
     "csc_area",
     "housing_type",
     "socio_economic_class",
     "meter_type",
     "water_heating_method"
-  ],
-  "derived_features": [
-    "three_month_average",
-    "three_month_max",
-    "three_month_min",
-    "consumption_change",
-    "consumption_percentage_change",
-    "rolling_standard_deviation",
-    "quarter"
   ],
   "categories": {
     "csc_area": [
@@ -172,42 +186,6 @@
       "We have an in-built water heating system powered solely by the grid supply."
     ]
   },
-  "bounds": {
-    "previous_month_consumption": {
-      "min": 0.0,
-      "max": 610.0
-    },
-    "household_size": {
-      "min": 1.0,
-      "max": 9.0
-    },
-    "floor_area": {
-      "min": 100.0,
-      "max": 4000.0
-    },
-    "monthly_expenditure": {
-      "min": 5000.0,
-      "max": 217899.99999999054
-    },
-    "total_appliances": {
-      "min": 1.0,
-      "max": 39.0
-    },
-    "total_appliance_hours_week": {
-      "min": 0.0,
-      "max": 471.5
-    },
-    "high_energy_appliance_count": {
-      "min": 0.0,
-      "max": 7.0
-    },
-    "ac_count": {
-      "min": 0.0,
-      "max": 4.0
-    },
-    "ac_hours_week": {
-      "min": 0.0,
-      "max": 119.0
-    }
-  }
+  "target_threshold_kwh": 200.0,
+  "decision_threshold": 0.4200000000000001
 }

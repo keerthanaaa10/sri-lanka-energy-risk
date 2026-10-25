@@ -4,11 +4,11 @@ from pathlib import Path
 import joblib
 import pandas as pd
 
-from .feature_engineering import MODEL_FEATURES, derived_from_inputs
+from .feature_engineering import CONSUMPTION_FEATURES, MODEL_FEATURES, derived_from_inputs
 
 
 NON_NEGATIVE = {
-    "previous_month_consumption", "consumption_two_months_ago", "consumption_three_months_ago",
+    *CONSUMPTION_FEATURES,
     "household_size", "floor_area", "monthly_expenditure", "total_appliances",
     "total_appliance_hours_week", "high_energy_appliance_count", "ac_count", "ac_hours_week",
 }
@@ -30,16 +30,16 @@ def predict_household(record: dict, model=None, model_path: str | Path | None = 
         for feature in NON_NEGATIVE:
             if completed.get(feature) is not None and float(completed[feature]) < 0:
                 raise ValueError(f"{feature} cannot be negative")
-        if int(completed["month_number"]) not in range(1, 13):
-            raise ValueError("month_number must be between 1 and 12")
+        if int(completed["prediction_month"]) not in range(1, 13):
+            raise ValueError("prediction_month must be between 1 and 12")
         bundle = model if model is not None else load_model(model_path)
         frame = pd.DataFrame([{key: completed[key] for key in MODEL_FEATURES}])
         probability = float(bundle.predict_proba(frame)[0, 1])
-        predicted = int(probability >= 0.5)
+        predicted = int(probability >= bundle.threshold)
         return {
             "predicted_class": predicted,
             "probability": probability,
-            "risk_label": "High risk" if predicted else "Normal risk",
+            "risk_label": "Very high risk" if predicted else "Normal risk",
             "error": None,
         }
     except (ValueError, TypeError, KeyError) as exc:
@@ -55,6 +55,30 @@ def explain_prediction(record: dict, model) -> list[dict]:
     frame = pd.DataFrame([{key: completed[key] for key in MODEL_FEATURES}])
     prepared = model.prepare(frame)
     pipeline = model.model
+    if getattr(model, "native_catboost", False):
+        from catboost import Pool
+
+        pool = Pool(prepared, cat_features=model.categorical_features)
+        values = pipeline.get_feature_importance(pool, type="ShapValues")[0][:-1]
+        names = list(model.feature_names)
+        ranked = np.argsort(np.abs(values))[::-1]
+        readable = {
+            "previous_month_consumption": "Previous-month consumption",
+            "four_month_average": "Four-month average",
+            "six_month_average": "Six-month average",
+            "historical_average": "Historical average",
+            "same_month_last_year": "Same month last year",
+            "consumption_change": "Recent consumption change",
+        }
+        factors = []
+        for index in ranked[:3]:
+            contribution = float(values[index])
+            factors.append({
+                "feature": readable.get(names[index], names[index].replace("_", " ").title()),
+                "direction": "higher" if contribution > 0 else "lower",
+                "shap_value": contribution,
+            })
+        return factors
     if not hasattr(pipeline, "named_steps"):
         return []
     preprocess = pipeline.named_steps["preprocess"]

@@ -31,5 +31,5 @@ class EnergyRiskModelBundle:
         return self.model.predict_proba(self.prepare(frame))
 
     def predict(self, frame: pd.DataFrame) -> np.ndarray:
-        return (self.predict_proba(frame)[:, 1] >= 0.5).astype(int)
+        return (self.predict_proba(frame)[:, 1] >= self.threshold).astype(int)
 
