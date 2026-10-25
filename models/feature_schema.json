@@ -1,0 +1,213 @@
+{
+  "model_features": [
+    "previous_month_consumption",
+    "consumption_two_months_ago",
+    "consumption_three_months_ago",
+    "three_month_average",
+    "three_month_max",
+    "three_month_min",
+    "consumption_change",
+    "consumption_percentage_change",
+    "rolling_standard_deviation",
+    "month_number",
+    "quarter",
+    "household_size",
+    "floor_area",
+    "monthly_expenditure",
+    "total_appliances",
+    "total_appliance_hours_week",
+    "high_energy_appliance_count",
+    "ac_count",
+    "ac_hours_week",
+    "has_refrigerator",
+    "has_washing_machine",
+    "has_rice_cooker",
+    "has_water_heater",
+    "has_computer",
+    "has_television",
+    "has_air_conditioner",
+    "home_business",
+    "solar_generation",
+    "grid_cooking",
+    "csc_area",
+    "housing_type",
+    "socio_economic_class",
+    "meter_type",
+    "water_heating_method"
+  ],
+  "numerical_features": [
+    "previous_month_consumption",
+    "consumption_two_months_ago",
+    "consumption_three_months_ago",
+    "three_month_average",
+    "three_month_max",
+    "three_month_min",
+    "consumption_change",
+    "consumption_percentage_change",
+    "rolling_standard_deviation",
+    "month_number",
+    "quarter",
+    "household_size",
+    "floor_area",
+    "monthly_expenditure",
+    "total_appliances",
+    "total_appliance_hours_week",
+    "high_energy_appliance_count",
+    "ac_count",
+    "ac_hours_week"
+  ],
+  "binary_features": [
+    "has_refrigerator",
+    "has_washing_machine",
+    "has_rice_cooker",
+    "has_water_heater",
+    "has_computer",
+    "has_television",
+    "has_air_conditioner",
+    "home_business",
+    "solar_generation",
+    "grid_cooking"
+  ],
+  "categorical_features": [
+    "csc_area",
+    "housing_type",
+    "socio_economic_class",
+    "meter_type",
+    "water_heating_method"
+  ],
+  "required_user_inputs": [
+    "previous_month_consumption",
+    "consumption_two_months_ago",
+    "consumption_three_months_ago",
+    "month_number",
+    "household_size",
+    "floor_area",
+    "monthly_expenditure",
+    "total_appliances",
+    "total_appliance_hours_week",
+    "high_energy_appliance_count",
+    "ac_count",
+    "ac_hours_week",
+    "has_refrigerator",
+    "has_washing_machine",
+    "has_rice_cooker",
+    "has_water_heater",
+    "has_computer",
+    "has_television",
+    "has_air_conditioner",
+    "home_business",
+    "solar_generation",
+    "grid_cooking",
+    "csc_area",
+    "housing_type",
+    "socio_economic_class",
+    "meter_type",
+    "water_heating_method"
+  ],
+  "derived_features": [
+    "three_month_average",
+    "three_month_max",
+    "three_month_min",
+    "consumption_change",
+    "consumption_percentage_change",
+    "rolling_standard_deviation",
+    "quarter"
+  ],
+  "categories": {
+    "csc_area": [
+      "ALUTHGAMA",
+      "AMBALANGODA",
+      "BORALASGAMUWA",
+      "DALUGAMA",
+      "GALLE",
+      "HIKKADUWA",
+      "JA-ELA",
+      "KALUTARA",
+      "KANDANA",
+      "KESELWATTA",
+      "KOLONNAWA",
+      "KOTIKAWATTA",
+      "MAHARA",
+      "MAHARAGAMA",
+      "MORATUWA NORTH",
+      "MORATUWA SOUTH",
+      "NEGOMBO",
+      "NUGEGODA",
+      "PANADURA",
+      "PAYAGALA",
+      "PITA-KOTTE",
+      "SEEDUWA",
+      "WATTALA"
+    ],
+    "housing_type": [
+      "Attached house / Annex",
+      "Condominium/ Luxury apartments",
+      "Flat",
+      "Line room/row house",
+      "Other",
+      "Single House - Double Floor",
+      "Single House - More than 2 floors",
+      "Single House - Single Floor",
+      "Slum / Shanty",
+      "Twin houses"
+    ],
+    "socio_economic_class": [
+      "SEC A",
+      "SEC B",
+      "SEC C",
+      "SEC D",
+      "SEC E"
+    ],
+    "meter_type": [
+      "Non smart meter",
+      "Smart meter"
+    ],
+    "water_heating_method": [
+      "None, we do not use hot water for bathing or body wash purposes.",
+      "We don't have an inbuilt system for water heating, we use heated water through an electric kettle/heater.",
+      "We don't have an inbuilt system for water heating, we use water heated by means such as gas, firewood etc. (other than electric kettle, electric water heater or water heated using any other electrical appliance).",
+      "We have a water heating system powered by a different source.",
+      "We have an in-built water heating system powered both by solar and the grid supply.",
+      "We have an in-built water heating system powered solely by solar energy.",
+      "We have an in-built water heating system powered solely by the grid supply."
+    ]
+  },
+  "bounds": {
+    "previous_month_consumption": {
+      "min": 0.0,
+      "max": 610.0
+    },
+    "household_size": {
+      "min": 1.0,
+      "max": 9.0
+    },
+    "floor_area": {
+      "min": 100.0,
+      "max": 4000.0
+    },
+    "monthly_expenditure": {
+      "min": 5000.0,
+      "max": 217899.99999999054
+    },
+    "total_appliances": {
+      "min": 1.0,
+      "max": 39.0
+    },
+    "total_appliance_hours_week": {
+      "min": 0.0,
+      "max": 471.5
+    },
+    "high_energy_appliance_count": {
+      "min": 0.0,
+      "max": 7.0
+    },
+    "ac_count": {
+      "min": 0.0,
+      "max": 4.0
+    },
+    "ac_hours_week": {
+      "min": 0.0,
+      "max": 119.0
+    }
+  }
+}

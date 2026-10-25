@@ -1,0 +1,134 @@
+{
+  "model_name": "Random Forest",
+  "model_version": "1.0",
+  "training_date": "2026-10-12",
+  "dataset_source": "RECON-SL, Kaggle version 2 / Zenodo record 15023048",
+  "selected_target_threshold_kwh": 90.0,
+  "threshold_reason": "At 90 kWh, 56.00% of training records were high risk, so neither class was below 10%. The fixed, understandable threshold was kept instead of the training 75th percentile (156.00 kWh).",
+  "training_date_range": [
+    "2023-12-31",
+    "2024-06-30"
+  ],
+  "validation_date_range": [
+    "2024-07-31",
+    "2024-08-31"
+  ],
+  "test_date_range": [
+    "2024-09-30",
+    "2024-09-30"
+  ],
+  "input_features": [
+    "previous_month_consumption",
+    "consumption_two_months_ago",
+    "consumption_three_months_ago",
+    "three_month_average",
+    "three_month_max",
+    "three_month_min",
+    "consumption_change",
+    "consumption_percentage_change",
+    "rolling_standard_deviation",
+    "month_number",
+    "quarter",
+    "household_size",
+    "floor_area",
+    "monthly_expenditure",
+    "total_appliances",
+    "total_appliance_hours_week",
+    "high_energy_appliance_count",
+    "ac_count",
+    "ac_hours_week",
+    "has_refrigerator",
+    "has_washing_machine",
+    "has_rice_cooker",
+    "has_water_heater",
+    "has_computer",
+    "has_television",
+    "has_air_conditioner",
+    "home_business",
+    "solar_generation",
+    "grid_cooking",
+    "csc_area",
+    "housing_type",
+    "socio_economic_class",
+    "meter_type",
+    "water_heating_method"
+  ],
+  "categorical_features": [
+    "csc_area",
+    "housing_type",
+    "socio_economic_class",
+    "meter_type",
+    "water_heating_method"
+  ],
+  "numerical_features": [
+    "previous_month_consumption",
+    "consumption_two_months_ago",
+    "consumption_three_months_ago",
+    "three_month_average",
+    "three_month_max",
+    "three_month_min",
+    "consumption_change",
+    "consumption_percentage_change",
+    "rolling_standard_deviation",
+    "month_number",
+    "quarter",
+    "household_size",
+    "floor_area",
+    "monthly_expenditure",
+    "total_appliances",
+    "total_appliance_hours_week",
+    "high_energy_appliance_count",
+    "ac_count",
+    "ac_hours_week",
+    "has_refrigerator",
+    "has_washing_machine",
+    "has_rice_cooker",
+    "has_water_heater",
+    "has_computer",
+    "has_television",
+    "has_air_conditioner",
+    "home_business",
+    "solar_generation",
+    "grid_cooking"
+  ],
+  "class_names": {
+    "0": "Normal electricity consumption risk",
+    "1": "High electricity consumption risk"
+  },
+  "test_metrics": {
+    "Accuracy": 0.9013035381750466,
+    "Balanced Accuracy": 0.9033721556956389,
+    "Precision": 0.9380614657210402,
+    "Recall": 0.8920863309352518,
+    "F1": 0.9144964277483291,
+    "ROC-AUC": 0.963221474937314,
+    "PR-AUC": 0.9723020160999069,
+    "Training Time": 0.5690366659982828,
+    "Prediction Time": 0.032534291996853426
+  },
+  "records_used": 26937,
+  "households_used": 3776,
+  "raw_date_range": [
+    "2022-10-31",
+    "2024-10-31"
+  ],
+  "library_versions": {
+    "python": "3.10.17",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2",
+    "xgboost": "3.2.0",
+    "catboost": "1.2.10"
+  },
+  "known_limitations": [
+    "The survey is from selected Sri Lankan cities and may not represent every household.",
+    "The test period contains the latest single usable calendar month.",
+    "This predicts a risk category, not an exact bill.",
+    "Behaviour and electricity tariffs can change over time."
+  ],
+  "selection_method": "Highest pre-defined validation score: 30% balanced accuracy, 20% high-risk recall, 25% F1 and 25% PR-AUC among individual ML models. Test results were not used for selection.",
+  "ensemble_models": [
+    "Random Forest",
+    "CatBoost",
+    "XGBoost"
+  ]
+}
